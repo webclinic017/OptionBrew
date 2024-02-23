@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
-  // Add other screens here as needed
+  Home: undefined;
 };
 
 export type LoginScreenNavigationProp = StackNavigationProp<
@@ -14,4 +14,9 @@ export type LoginScreenNavigationProp = StackNavigationProp<
 export type SignUpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "SignUp"
+>;
+
+export type HomeNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Home"
 >;
