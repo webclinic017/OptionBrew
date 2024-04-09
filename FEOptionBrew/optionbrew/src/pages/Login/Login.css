@@ -1,0 +1,116 @@
+.login-form-container {
+  height: 80%;
+  width: 30%;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  margin-bottom: 10px;
+}
+
+.forgot-password {
+  font-size: 12px;
+  text-align: right;
+  margin-bottom: 15px;
+  color: rgb(62, 116, 253);
+}
+
+.forgot-password a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.sign-up {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 15px;
+  color: black;
+}
+
+.sign-up a {
+  color: rgb(62, 116, 253);
+  text-decoration: none;
+}
+
+.sign-up a:hover {
+  text-decoration: underline;
+}
+
+.guest-user {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.guest-text {
+  color: rgb(62, 116, 253);
+}
+
+.guest-text:hover {
+  text-decoration: underline;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Media Query for tablets */
+@media screen and (max-width: 768px) {
+  .login-form-container {
+    width: 50%;
+  }
+
+  button,
+  input[type="text"],
+  input[type="password"] {
+    padding: 12px;
+  }
+
+  .forgot-password,
+  .sign-up {
+    font-size: 14px;
+  }
+}
+
+/* Media Query for mobile phones */
+@media screen and (max-width: 480px) {
+  .login-form-container {
+    width: 80%;
+    padding: 10px;
+  }
+
+  button,
+  input[type="text"],
+  input[type="password"] {
+    padding: 15px;
+  }
+
+  .forgot-password,
+  .sign-up {
+    font-size: 16px;
+  }
+}
