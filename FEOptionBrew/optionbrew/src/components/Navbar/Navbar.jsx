@@ -2,14 +2,14 @@ import React from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { Axios } from "axios";
 import "./Navbar.css";
-import logoImport from "../../assets/LogoVideo2.mp4";
+import logoImport from "../../assets/Logo.png";
 
 const Navbar = () => {
   // Navigation hook for redirecting
   const navigate = useNavigate();
 
   // Logo
-  const logoVideo = logoImport;
+  const logo = logoImport;
 
   const handleLogoClick = () => {
     navigate("/");
@@ -20,11 +20,9 @@ const Navbar = () => {
       <div className="navbar">
         <div className="nav-container">
           <div className="navbar-logo" onClick={handleLogoClick}>
-            <video autoPlay muted className="logo-video">
-              <source src={logoVideo} type="video/mp4" />
-            </video>
+            <img src={logo} alt="Option Brew Logo" className="logo" />{" "}
           </div>
-          <h1 className="optionBrew-Name">
+          <h1 className="optionBrew-Name" onClick={handleLogoClick}>
             Option <span className="highlighted-word">Brew</span>
           </h1>
           <div className="quick-links">

@@ -8,42 +8,43 @@
   display: flex;
   align-items: center;
   justify-content: start; /* Align items to the start of the container */
-  max-width: 1200px; /* Adjust max width as needed */
   margin: 0 auto; /* Centers nav-container within the navbar */
 }
 
 .navbar-logo {
-  margin-right: 20px; /* Add some margin to the right of the logo */
   margin-bottom: 25px;
   cursor: pointer;
 }
 
-.navbar-logo .logo-video {
-  width: 120px; /* Increase width as needed */
-  height: auto; /* Keep aspect ratio */
+.navbar-logo .logo {
+  width: 90px; /* Adjust width as needed */
+  height: auto; /* Adjust height to maintain aspect ratio */
+  cursor: pointer; /* Changes cursor to indicate it's clickable */
+  margin-top: 15px;
 }
 
 .optionBrew-Name {
-  font-size: 1.5em; /* Increase font size */
+  font-size: 2.5em; /* Increase font size */
   font-weight: 700; /* Maintain bold font-weight */
-  margin: 0 20px 0 0; /* Adjust margin to space out the brand name */
+  margin: 0 30px 0 10px; /* Adjust margin to space out the brand name */
+  cursor: pointer;
 }
 
 .highlighted-word {
-  color: #dd9450;
+  color: #2e1d07;
   font-weight: 900;
+  transition: color 0.3s ease;
 }
 
 .quick-links {
   display: flex;
   align-items: center;
-  margin-left: auto; /* Push links to the right */
 }
 
 .quick-link {
   text-decoration: none;
   color: #000000; /* Text color */
-  font-size: 1.2em; /* Increase font size for links */
+  font-size: 1.7em; /* Increase font size for links */
   font-weight: bold; /* Bold font for links */
   margin: 0 20px; /* Evenly space links */
   padding: 10px 0; /* Padding for clickable area */
@@ -55,5 +56,29 @@
 }
 
 .active-link {
-  color: #dd9450;
+  color: #5e3c0f;
+}
+
+.active-link:hover {
+  color: #ac8c62;
+}
+
+@media (max-width: 768px) {
+  .navbar-logo .logo {
+    width: 60px; /* Smaller logo for mobile */
+  }
+
+  .optionBrew-Name {
+    font-size: 1.5em; /* Smaller text for mobile */
+  }
+
+  .quick-link {
+    font-size: 1em; /* Smaller text for mobile */
+    margin: 0 10px; /* Less space between links on mobile */
+  }
+
+  /* Adjust padding for smaller screens */
+  .navbar {
+    padding: 10px 20px;
+  }
 }

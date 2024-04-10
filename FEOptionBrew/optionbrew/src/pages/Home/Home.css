@@ -1,0 +1,112 @@
+/* Base Layout Styles */
+.option-brew-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 30px;
+  flex-grow: 1;
+}
+
+/* Header Styles */
+.option-brew-home h1 {
+  color: #333;
+  font-size: 3.5rem;
+  text-align: center;
+}
+
+/* Content Container Styles */
+.text-and-login-container,
+.stocks-graph-placeholder {
+  flex: 1; /* Equal width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertical centering */
+  align-items: center; /* Horizontal centering */
+}
+
+.text-and-login-container p {
+  color: #000;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* Footer Styles */
+.option-brew-home > footer {
+  width: 98%;
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+  text-align: center;
+  background: #333; /* Background color */
+  color: white;
+}
+
+.option-brew-footer a {
+  color: #ccc;
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+/* Button Styles */
+.header-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 10px 25px;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.3s ease;
+  font-size: 1.5rem;
+  letter-spacing: 0.07rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 500px; /* Fixed width, consider responsiveness */
+}
+
+/* Specific Button Variations */
+.login-btn,
+.signup-btn {
+  background-color: #fff;
+  color: #333;
+  border-color: #333;
+}
+
+.signup-btn {
+  background-color: #2e1d07;
+  color: #fff;
+  border-color: #2e1d07;
+}
+
+.btn:hover,
+.btn:focus {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  background-color: #000;
+  color: #e6ac61;
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .option-brew-home {
+    flex-direction: column;
+  }
+
+  .text-and-login-container,
+  .stocks-graph-placeholder {
+    flex: unset;
+    width: 100%; /* Full width on smaller screens */
+  }
+}
