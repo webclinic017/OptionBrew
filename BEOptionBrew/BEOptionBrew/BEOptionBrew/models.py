@@ -1,10 +1,26 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
-# Custom User model
 class User(AbstractUser):
     phone_number = models.CharField(max_length=20, unique=True)
-    # You can add more fields as needed
+
+    # Override the groups and user_permissions fields
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_name="user_set_custom",  # Changed related_name
+        related_query_name="user",
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name="user_set_custom",  # Changed related_name
+        related_query_name="user_permission",
+    )
 
 class ContactInformation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -39,7 +55,7 @@ class Documents(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     document_type = models.CharField(max_length=255)
     document_sub_type = models.CharField(max_length=255, null=True, blank=True)
-    content = models.TextField()  # Consider changing to a FileField or similar if storing files
+    content = models.TextField()
     mime_type = models.CharField(max_length=50)
 
 class TrustedContact(models.Model):

@@ -36,3 +36,4 @@ yarn-error.*
 
 # env variables
 /FEOptionBrew/.env  
+BEOptionBrew/BEOptionBrew/BEOptionBrew/alpaca/.env
