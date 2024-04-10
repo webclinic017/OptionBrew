@@ -6,22 +6,22 @@ import ProtectedRoute from "./util/ProtecedRoute";
 import Account from "./pages/Account/Account";
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
 
-          {/* PROTECTED ROUTES */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/account" element={<Account />} />
-          </Route>
-        </Routes>
-      </div>
+        {/* PROTECTED ROUTES */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/account" element={<Account />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
