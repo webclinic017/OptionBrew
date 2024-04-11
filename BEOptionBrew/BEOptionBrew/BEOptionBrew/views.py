@@ -24,11 +24,10 @@ class UserRegistrationView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        # Serialize the user for the response
-        response_serializer = UserSerializer(user)
-        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ContactInformation Views
 class ContactInformationListCreate(generics.ListCreateAPIView):

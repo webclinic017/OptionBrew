@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.db import transaction
+from django.contrib.auth.hashers import make_password
 from .models import User, ContactInformation, IdentityInformation, Disclosures, Agreements, Documents, TrustedContact
+from .alpaca_util import Users as AlpacaUsers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,35 +51,33 @@ class TrustedContactSerializer(serializers.ModelSerializer):
         model = TrustedContact
         fields = '__all__'
 
-class UserRegistrationSerializer(serializers.Serializer):
-    user = UserSerializer()
-    contact_information = ContactInformationSerializer()
-    identity_information = IdentityInformationSerializer()
-    disclosures = DisclosuresSerializer()
-    agreements = AgreementsSerializer(many=True)
-    documents = DocumentsSerializer(many=True)
-    trusted_contact = TrustedContactSerializer()
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'alpaca_account_id']  # Added 'alpaca_account_id'
 
-    @transaction.atomic
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
+
     def create(self, validated_data):
-        # Create the user first
-        user_data = validated_data.pop('user')
-        user = User.objects.create(**user_data)
-        user.set_password(user_data.get('password'))  # Ensure 'password' key exists
-        user.save()
+        # Hash the user's password
+        validated_data['password'] = make_password(validated_data.pop('password'))
 
-        # Create related objects without the 'user' field explicitly
-        ContactInformation.objects.create(user=user, **validated_data.pop('contact_information'))
-        IdentityInformation.objects.create(user=user, **validated_data.pop('identity_information'))
-        Disclosures.objects.create(user=user, **validated_data.pop('disclosures'))
+        # Check if a user with the provided phone number already exists
+        phone_number = validated_data.get('phone_number')
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise serializers.ValidationError("Phone number is already in use.")
 
-        # Agreements and documents can have multiple instances, so iterate through them
-        for agreement_data in validated_data.pop('agreements'):
-            Agreements.objects.create(user=user, **agreement_data)
-        
-        for document_data in validated_data.pop('documents'):
-            Documents.objects.create(user=user, **document_data)
+        # Create the user instance
+        user = User.objects.create(**validated_data)
 
-        TrustedContact.objects.create(user=user, **validated_data.pop('trusted_contact'))
+        # Call Alpaca API to register the user
+        alpaca_api = AlpacaUsers()
+        alpaca_account_id = alpaca_api.registerUser(user.first_name, user.last_name, user.email, user.phone_number)
+        user.alpaca_account_id = alpaca_account_id
+        user.save()  # Save the user instance after updating it
 
         return user
+
