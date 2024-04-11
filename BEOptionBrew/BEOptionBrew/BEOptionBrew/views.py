@@ -1,5 +1,6 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 from .models import (
     User, ContactInformation, IdentityInformation, Disclosures,
     Agreements, Documents, TrustedContact
@@ -9,6 +10,8 @@ from .serializers import (
     DisclosuresSerializer, AgreementsSerializer, DocumentsSerializer,
     TrustedContactSerializer, UserRegistrationSerializer
 )
+
+from .alpaca_util import Trades
 
 # User Views
 class UserListCreate(generics.ListCreateAPIView):
@@ -82,3 +85,21 @@ class TrustedContactListCreate(generics.ListCreateAPIView):
 class TrustedContactDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = TrustedContact.objects.all()
     serializer_class = TrustedContactSerializer
+
+# Trades Views
+@csrf_exempt  # Only for demo purposes. Make sure to handle CSRF protection properly in production.
+def open_position_view(request):
+    if request.method == 'POST':
+        data = request.POST  # Assuming you're sending data via POST request
+        symbol = data.get('symbol')
+        qty = data.get('qty')
+        side = data.get('side')
+        
+        trades = Trades()
+        try:
+            order_id = trades.open_position(symbol, qty, side)
+            return JsonResponse({'order_id': order_id})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)

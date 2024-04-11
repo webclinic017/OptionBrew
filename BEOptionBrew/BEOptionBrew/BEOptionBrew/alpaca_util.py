@@ -108,4 +108,26 @@ class Users(AlpacaAPI):
         serial = random.randint(1, 9999)
         return f"{area:03d}-{group:02d}-{serial:04d}"
 
+class Trades(AlpacaAPI):
+    def open_position(self, symbol, qty, side, type='market', time_in_force='gtc'):
+        alpaca_account_id = 0
+        endpoint = f'/v1/trading/accounts/{alpaca_account_id}/orders'
+        data = {
+            "symbol": symbol,
+            "qty": qty,
+            "side": side,  # "buy" or "sell"
+            "type": type,  # "market", "limit", etc.
+            "time_in_force": time_in_force  # "day", "gtc", etc.
+        }
+
+        response = self._send_request('post', endpoint, data=data)
+
+        if response and 'id' in response:
+            return response['id']  # Return the order ID
+        else:
+            raise Exception("Failed to open position.")
+
+    def close_position(self, symbol, qty, side, type='market', time_in_force='gtc'):
+        # For closing a position, you can use similar logic as opening a position
+        return self.open_position(symbol, qty, side, type, time_in_force)
 
