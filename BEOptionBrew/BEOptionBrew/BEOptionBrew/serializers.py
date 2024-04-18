@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
 from .models import User, ContactInformation, IdentityInformation, Disclosures, Agreements, Documents, TrustedContact
-from .alpaca_util import Users as AlpacaUsers
+from .alpaca_broker import Users as AlpacaUsers
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

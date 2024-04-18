@@ -1,3 +1,4 @@
+# Broker Utility Classes to sign users up, execute positions, and more... 
 import os
 import requests
 import random
@@ -5,8 +6,11 @@ import datetime
 import base64
 from .models import User
 
+
+
 class AlpacaAPI:
     def __init__(self):
+        load_dotenv()
         self.api_key = os.getenv('B_ALPACA_API_KEY')
         self.api_secret = os.getenv('B_ALPACA_API_SECRET')
         self.base_url = "https://broker-api.sandbox.alpaca.markets"

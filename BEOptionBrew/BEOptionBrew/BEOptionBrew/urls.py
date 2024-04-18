@@ -25,5 +25,7 @@ urlpatterns = [
     path('users/', UserListCreate.as_view(), name='user-list'),
     path('users/<int:pk>/', UserDetail.as_view(), name='user-detail'),
     # TRADES 
-    path('open-position/', open_position_view, name='open-position')
+    path('open-position/', open_position_view.as_view(), name='open-position')
+    # MARKET DATA - WIP 
+    # path("market-data/", )
 ]

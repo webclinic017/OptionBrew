@@ -11,7 +11,7 @@ from .serializers import (
     TrustedContactSerializer, UserRegistrationSerializer
 )
 
-from .alpaca_util import Trades
+from .alpaca_broker import Trades
 
 # User Views
 class UserListCreate(generics.ListCreateAPIView):
@@ -85,6 +85,8 @@ class TrustedContactListCreate(generics.ListCreateAPIView):
 class TrustedContactDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = TrustedContact.objects.all()
     serializer_class = TrustedContactSerializer
+
+
 
 # Trades Views
 @csrf_exempt  # Only for demo purposes. Make sure to handle CSRF protection properly in production.
