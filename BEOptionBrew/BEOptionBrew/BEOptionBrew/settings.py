@@ -29,7 +29,10 @@ SECRET_KEY = 'django-insecure-l#jru1ux53c#pz71=)55*t$4yu8^yccv%+-8bdp(f5qp^fe240
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be included in cross-site HTTP requests
 
 # Application definition
 
@@ -41,9 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BEOptionBrew',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

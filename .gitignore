@@ -36,6 +36,6 @@ yarn-error.*
 
 # env variables
 /FEOptionBrew/.env  
-BEOptionBrew\BEOptionBrew\BEOptionBrew\.env
+BEOptionBrew/BEOptionBrew/BEOptionBrew/.env
 BEOptionBrew/BEOptionBrew/venv
 BEOptionBrew/BEOptionBrew/venv/Lib/site-packages

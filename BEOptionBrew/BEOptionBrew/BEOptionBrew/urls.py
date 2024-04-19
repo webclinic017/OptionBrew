@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import UserListCreate, UserDetail, ContactInformationListCreate, ContactInformationDetail, UserRegistrationView, open_position_view
+from .views import (UserListCreate, UserDetail, UserRegistrationView, 
+                    open_position_view, market_data_view)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +26,7 @@ urlpatterns = [
     path('users/', UserListCreate.as_view(), name='user-list'),
     path('users/<int:pk>/', UserDetail.as_view(), name='user-detail'),
     # TRADES 
-    path('open-position/', open_position_view.as_view(), name='open-position')
-    # MARKET DATA - WIP 
-    # path("market-data/", )
+    path('open-position/', open_position_view, name='open-position'),
+    # MARKET DATA
+    path('market-data/aapl/live/', market_data_view, name='live-data-aapl'),  # Endpoint for live data
 ]
