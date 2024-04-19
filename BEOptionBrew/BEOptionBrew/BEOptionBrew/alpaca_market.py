@@ -4,6 +4,7 @@ import threading
 import os
 from dotenv import load_dotenv
 import requests
+
 class MarketAPI:
   instance = None  # Singleton instance
 

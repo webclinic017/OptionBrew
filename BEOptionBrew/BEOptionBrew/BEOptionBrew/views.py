@@ -113,20 +113,64 @@ def is_market_open():
     market_close = datetime.time(16, 0)
     return market_open <= now.time() <= market_close
 
-def market_data_view(request):
+def live_data_view(request):
     market_api = MarketAPI.get_instance()
-    try:
-        if is_market_open():
-            if not market_api.connection or not market_api.connection.sock.connected:
-                market_api.connect_to_stream()
-            market_api.subscribe_to_stock("AAPL")
-            return JsonResponse({"status": "Subscribed to live data", "ticker": "AAPL"})
-        else:
-            today = datetime.date.today()
-            start_date = (today - datetime.timedelta(days=7)).isoformat()
-            end_date = today.isoformat()
-            data = market_api.fetch_historical_data("AAPL", start_date, end_date, '1D')
-            return JsonResponse(data, safe=False)
-    except Exception as e:
-        logging.error(f"Error during market data retrieval: {str(e)}")
-        return JsonResponse({'error': str(e)}, status=500)
+    if not market_api.connection or not market_api.connection.sock.connected:
+        market_api.connect_to_stream()
+        market_api.subscribe_to_stock("TSLA")
+        return JsonResponse({"status": "Subscribed to live data", "ticker": "TSLA"})
+    else:
+        return JsonResponse({"error": "No live data available"}, status=404)
+
+# def market_data_view(request, time_span):
+#     market_api = MarketAPI.get_instance()
+#     eastern = timezone('US/Eastern')
+#     now = datetime.datetime.now(eastern)
+#     market_open = datetime.time(9, 30)
+#     market_close = datetime.time(16, 0)
+
+#     if market_open <= now.time() <= market_close:
+#         # Handle live data when market is open
+#         if not market_api.connection or not market_api.connection.sock.connected:
+#             market_api.connect_to_stream()
+#         market_api.subscribe_to_stock("TSLA")
+#         return JsonResponse({"status": "Subscribed to live data", "ticker": "TSLA"})
+#     else:
+#         # Calculate the date range based on the time_span
+#         end_date = now.date()
+#         if time_span == '1D':
+#             start_date = end_date
+#         elif time_span == '1M':
+#             start_date = end_date - datetime.timedelta(days=30)
+#         elif time_span == '6M':
+#             start_date = end_date - datetime.timedelta(days=180)
+#         elif time_span == 'YTD':
+#             start_date = datetime.date(end_date.year, 1, 1)
+#         else:
+#             return JsonResponse({'error': 'Invalid time span'}, status=400)
+
+#         data = market_api.fetch_historical_data("TSLA", start_date.isoformat(), end_date.isoformat(), '1D')
+#         return JsonResponse(data, safe=False)
+
+#     return JsonResponse({'error': 'Market data request failed'}, status=500)
+
+def historical_data_view(request, time_span):
+    market_api = MarketAPI.get_instance()
+    eastern = timezone('US/Eastern')
+    now = datetime.datetime.now(eastern)
+    end_date = now.date()
+
+    # Calculate start date based on time_span
+    if time_span == '1D':
+        start_date = end_date
+    elif time_span == '1M':
+        start_date = end_date - datetime.timedelta(days=30)
+    elif time_span == '6M':
+        start_date = end_date - datetime.timedelta(days=180)
+    elif time_span == 'YTD':
+        start_date = datetime.date(end_date.year, 1, 1)
+    else:
+        return JsonResponse({'error': 'Invalid time span'}, status=400)
+
+    data = market_api.fetch_historical_data("TSLA", start_date.isoformat(), end_date.isoformat(), '1D')
+    return JsonResponse(data, safe=False)

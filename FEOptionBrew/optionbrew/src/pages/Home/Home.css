@@ -1,3 +1,10 @@
+/* Global Settings */
+body {
+  background-color: #121212; /* Dark background for the whole app */
+  color: #ffffff; /* Light text color for better readability */
+  font-family: "Arial", sans-serif; /* Modern, readable font family */
+}
+
 /* Base Layout Styles */
 .option-brew-home {
   display: flex;
@@ -5,31 +12,70 @@
   justify-content: space-around;
   padding: 30px;
   flex-grow: 1;
+  color: #ffffff; /* Ensure all text inside is light */
 }
 
 /* Header Styles */
 .option-brew-home h1 {
-  color: #333;
+  color: #ffffff; /* Light header text for dark theme */
   font-size: 3.5rem;
   text-align: center;
+}
+
+.highlighted-word {
+  color: #82ca9d; /* Accent color for highlighted words */
+}
+
+.alpaca-link {
+  text-decoration: none;
+  color: #82ca9d; /* Accent color for highlighted words */
+}
+
+.alpaca-link:hover {
+  text-decoration: underline;
+}
+
+.tsla-label {
+  text-align: "center";
+  color: #82ca9d;
+  font-size: 2.2em;
 }
 
 /* Content Container Styles */
 .text-and-login-container,
 .stocks-graph-placeholder {
-  flex: 1; /* Equal width */
+  flex: 1; /* Equal width for both containers */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertical centering */
+  justify-content: center; /* Vertical centering in their container */
   align-items: center; /* Horizontal centering */
 }
 
-.text-and-login-container p {
-  color: #000;
-  font-size: 1rem;
-  text-align: center;
-  margin-top: 10px;
-  font-weight: 600;
+/* Stocks Graph Placeholder for chart container */
+.stocks-graph-placeholder {
+  background-color: #1e1e1e; /* Dark background for chart area */
+  color: #cccccc; /* Light grey color for any text */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners for the chart container */
+  transition: all 2s ease;
+}
+
+.recharts-text {
+  fill: #ccc; /* Light color for better readability on dark background */
+  font-size: 12px; /* Adjust font size as needed */
+}
+
+.recharts-tooltip-label {
+  color: #fff; /* White color for tooltip text */
+}
+
+/* Custom Tooltip Styles */
+.custom-tooltip {
+  background-color: #2c2c2c; /* Dark background for tooltip */
+  border: 1px solid #777777; /* Lighter border for tooltip */
+  color: #ffffff; /* White color for text inside tooltip */
+  padding: 5px;
+  border-radius: 5px; /* Rounded corners for tooltip */
 }
 
 /* Footer Styles */
@@ -39,12 +85,12 @@
   bottom: 0;
   padding: 20px;
   text-align: center;
-  background: #333; /* Background color */
-  color: white;
+  background: #333333; /* Dark background for footer */
+  color: #ffffff; /* White text for footer */
 }
 
 .option-brew-footer a {
-  color: #ccc;
+  color: #cccccc; /* Light grey color for links */
   text-decoration: none;
   padding: 0 5px;
 }
@@ -59,7 +105,6 @@
 
 .btn {
   padding: 10px 25px;
-  border: 2px solid transparent;
   border-radius: 25px;
   cursor: pointer;
   font-weight: 600;
@@ -68,34 +113,51 @@
   font-size: 1.5rem;
   letter-spacing: 0.07rem;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 500px; /* Fixed width, consider responsiveness */
+  width: auto; /* Adjusted to auto for better responsiveness */
+  border: none; /* Remove border for a cleaner look */
+  background-color: #333333; /* Dark button background */
+  color: #ffffff; /* White text on buttons */
 }
 
-/* Specific Button Variations */
-.login-btn,
+/* Button Variations */
+.login-btn:hover,
+.signup-btn:hover,
+.login-btn:focus,
+.signup-btn:focus {
+  background-color: #444444; /* Slightly lighter background for hover/focus */
+  color: #82ca9d; /* Use the chart's line color as accent */
+}
+
 .signup-btn {
-  background-color: #fff;
-  color: #333;
-  border-color: #333;
-}
-
-.signup-btn {
-  background-color: #2e1d07;
-  color: #fff;
-  border-color: #2e1d07;
-}
-
-.btn:hover,
-.btn:focus {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-  background-color: #000;
-  color: #e6ac61;
+  background-color: #82ca9d; /* Specific background for sign up button */
+  color: #ffffff; /* White text for sign up button */
 }
 
 .btn:active {
   transform: translateY(1px);
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Ticker Button Variations */
+
+.time-span-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn.time-btn {
+  padding: 10px 30px;
+  margin-right: 10px;
+  background-color: #333333;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+.btn.time-btn.active {
+  background-color: #82ca9d;
+  color: white;
 }
 
 /* Responsive Design */
@@ -106,7 +168,6 @@
 
   .text-and-login-container,
   .stocks-graph-placeholder {
-    flex: unset;
     width: 100%; /* Full width on smaller screens */
   }
 }
