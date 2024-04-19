@@ -18,7 +18,7 @@ class MarketAPI:
       load_dotenv()
       self.api_key = os.getenv('T_ALPACA_API_KEY')
       self.api_secret = os.getenv('T_ALPACA_API_SECRET')
-      self.websocket_url = "wss://stream.data.alpaca.markets/v2/iex"
+      self.websocket_url = "wss://stream.data.sandbox.alpaca.markets/v2/iex"
       self.connection = None
       self.data = []  # Initialize the data list to store trade data
       self.lock = threading.Lock()
