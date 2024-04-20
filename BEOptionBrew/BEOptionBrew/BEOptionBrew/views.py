@@ -9,7 +9,15 @@ from django.http import JsonResponse
 import datetime
 from pytz import timezone
 import logging
-
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import UserSerializer
 # Debugging 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -32,6 +40,28 @@ class UserRegistrationView(generics.CreateAPIView):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserLoginView(APIView):
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(username=email, password=password)
+        if user:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key, 'user_id': user.id})
+        else:
+            return Response({'error': 'Invalid Credentials'}, status=400)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_current_user(request):
+    """
+    View to get the current user's details.
+    """
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+        
 # ContactInformation Views
 class ContactInformationListCreate(generics.ListCreateAPIView):
     queryset = ContactInformation.objects.all()
@@ -113,14 +143,22 @@ def is_market_open():
     market_close = datetime.time(16, 0)
     return market_open <= now.time() <= market_close
 
-def live_data_view(request):
+def get_live_data(request, ticker):
+    """Endpoint to get the latest live data for a ticker."""
+    market_api = MarketAPI.get_instance()
+    data = market_api.data.get(ticker, [])
+    if data:
+        # Return the last few entries, e.g., the last 10 entries
+        return JsonResponse(data[-10:], safe=False)
+    else:
+        return JsonResponse({"error": "No data available for the specified ticker"}, status=404)
+
+def live_data_view(request, ticker):
     market_api = MarketAPI.get_instance()
     if not market_api.connection or not market_api.connection.sock.connected:
         market_api.connect_to_stream()
-        market_api.subscribe_to_stock("TSLA")
-        return JsonResponse({"status": "Subscribed to live data", "ticker": "TSLA"})
-    else:
-        return JsonResponse({"error": "No live data available"}, status=404)
+    market_api.subscribe_to_stock(ticker)
+    return JsonResponse({"status": "Subscribed to live data", "ticker": ticker})
 
 # def market_data_view(request, time_span):
 #     market_api = MarketAPI.get_instance()
@@ -154,7 +192,7 @@ def live_data_view(request):
 
 #     return JsonResponse({'error': 'Market data request failed'}, status=500)
 
-def historical_data_view(request, time_span):
+def historical_data_view(request, ticker, time_span):
     market_api = MarketAPI.get_instance()
     eastern = timezone('US/Eastern')
     now = datetime.datetime.now(eastern)
@@ -172,5 +210,5 @@ def historical_data_view(request, time_span):
     else:
         return JsonResponse({'error': 'Invalid time span'}, status=400)
 
-    data = market_api.fetch_historical_data("TSLA", start_date.isoformat(), end_date.isoformat(), '1D')
+    data = market_api.fetch_historical_data(ticker, start_date.isoformat(), end_date.isoformat(), '1D')
     return JsonResponse(data, safe=False)

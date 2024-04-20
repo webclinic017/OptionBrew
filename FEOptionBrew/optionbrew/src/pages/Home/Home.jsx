@@ -19,6 +19,7 @@ const Home = () => {
   const [stockData, setStockData] = useState([]);
   const [isDataLive, setIsDataLive] = useState(false);
   const [timeSpan, setTimeSpan] = useState("LIVE"); // Default to 'Live'
+  const [ticker, setTicker] = useState("TSLA"); // Set default ticker symbol to 'TSLA'
 
   const getDateFormat = (span) => {
     switch (span) {
@@ -81,12 +82,26 @@ const Home = () => {
     fetchStockData(span);
   };
 
+  const fetchLiveData = async () => {
+    const endpoint = `http://127.0.0.1:8000/market-data/${ticker}/live-data/`;
+    try {
+      const response = await axios.get(endpoint);
+      const newData = response.data.map((data) => ({
+        ...data,
+        timestamp: new Date(data.timestamp).getTime(),
+      }));
+      setStockData(newData);
+    } catch (error) {
+      console.error("Failed to fetch live stock data:", error);
+    }
+  };
+
   const fetchStockData = async (span) => {
     let endpoint;
     if (span === "LIVE") {
-      endpoint = "http://127.0.0.1:8000/market-data/tsla/live/";
+      endpoint = `http://127.0.0.1:8000/market-data/${ticker}/live/`;
     } else {
-      endpoint = `http://127.0.0.1:8000/market-data/tsla/historical/${span}/`;
+      endpoint = `http://127.0.0.1:8000/market-data/${ticker}/historical/${span}/`;
     }
 
     console.log(`Fetching data from: ${endpoint}`); // Debugging log
@@ -109,15 +124,25 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log(
-      `Market is open: ${isMarketOpen()}, Live data active: ${isDataLive}`
-    ); // Debugging log
-    setIsDataLive(isMarketOpen());
-    if (timeSpan === "LIVE" && isDataLive) {
-      const interval = setInterval(() => fetchStockData(timeSpan), 5000);
-      return () => clearInterval(interval);
+    if (timeSpan === "LIVE") {
+      const fetchInterval = isMarketOpen()
+        ? setInterval(fetchLiveData, 5000)
+        : null;
+      setIsDataLive(!!fetchInterval); // Only set to true if interval is set
+
+      // Fetch initial data if market is open
+      if (fetchInterval) {
+        fetchLiveData();
+      }
+
+      return () => clearInterval(fetchInterval);
+    } else {
+      setIsDataLive(false);
+      fetchStockData(timeSpan); // Fetch historical data once
+
+      return () => {}; // No cleanup needed for historical data fetch
     }
-  }, [timeSpan, isDataLive]);
+  }, [timeSpan, ticker]); // Removed isMarketOpen from dependencies
 
   return (
     <div className="option-brew-home">
@@ -148,7 +173,7 @@ const Home = () => {
         </div>
       </div>
       <div className="stocks-graph-placeholder">
-        <h2 className="tsla-label">$TSLA</h2>
+        <h2 className="tsla-label">${ticker}</h2>
         <div className="time-span-buttons">
           {["LIVE", "1M", "6M", "YTD"].map((span) => (
             <button

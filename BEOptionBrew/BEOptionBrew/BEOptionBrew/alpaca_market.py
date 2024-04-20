@@ -20,7 +20,7 @@ class MarketAPI:
       self.api_secret = os.getenv('T_ALPACA_API_SECRET')
       self.websocket_url = "wss://stream.data.sandbox.alpaca.markets/v2/iex"
       self.connection = None
-      self.data = []  # Initialize the data list to store trade data
+      self.data = {}  # Change to a dictionary keyed by ticker
       self.lock = threading.Lock()
       self.connect_to_stream()
 
@@ -30,15 +30,18 @@ class MarketAPI:
       ws.send(json.dumps(auth_data))
 
   def on_message(self, ws, message):
-      print("Received message:", json.loads(message))
-      message = json.loads(message)
-      if 'T' in message and message['T'] == 'trade':
-          with self.lock:
-              # Store each trade update in the data list
-              self.data.append({
-                  "timestamp": message['timestamp'],
-                  "close": message['price']
-              })
+    print("Received message:", json.loads(message))
+    message = json.loads(message)
+    if 'T' in message and message['T'] == 'trade':
+        with self.lock:
+            # Store each trade update in the data dictionary under its ticker
+            ticker = message['S']
+            if ticker not in self.data:
+                self.data[ticker] = []
+            self.data[ticker].append({
+                "timestamp": message['t'],
+                "price": message['p']
+            })
 
   def on_error(self, ws, error):
       print("Error:", error)

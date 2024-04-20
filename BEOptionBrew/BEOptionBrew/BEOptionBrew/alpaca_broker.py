@@ -5,7 +5,7 @@ import random
 import datetime
 import base64
 from .models import User
-
+from dotenv import load_dotenv
 
 
 class AlpacaAPI:

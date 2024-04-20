@@ -1,49 +1,55 @@
-import React from "react";
-import { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
 
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.withCredentials = true;
-
-const server = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-});
-
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(""); // Changed variable name for clarity
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const requestSent = useRef(false);
-
-  localStorage.removeItem("token");
-
   const navigate = useNavigate();
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/login/", {
+        email: email, // Updated to use email instead of username for clarity
+        password: password,
+      });
+      localStorage.setItem("token", response.data.token); // Store the token in local storage
+      console.log("Login successful", response.data);
+      navigate("/dashboard"); // Redirect to a dashboard or home page after login
+    } catch (err) {
+      if (err.response) {
+        setError("Failed to log in: " + err.response.data.error); // More specific error based on backend response
+      } else {
+        setError(
+          "Failed to log in. Please check your credentials and try again."
+        );
+      }
+      console.error(err);
+    }
+  };
 
   return (
-    <div className="login-form-container">
-      <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <h2>Log into Your Account</h2>
+      <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
-          <label htmlFor="username">Email</label>
+          <label htmlFor="email">Email</label>
           <input
-            className="username-form"
             type="email"
-            id="username"
-            name="username"
+            id="email"
+            name="email"
             placeholder="Enter your email"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
-            className="password-form"
             type="password"
             id="password"
             name="password"
@@ -53,19 +59,13 @@ const Login = () => {
             required
           />
         </div>
-        <div className="forgot-password">
-          <Link to="/reset-password">Forgot password?</Link>
+        {error && <p className="login-error">{error}</p>}
+        <button type="submit" className="login-btn-page">
+          Login
+        </button>
+        <div className="login-links">
+          <Link to="/sign-up">Don't have an account? Sign Up</Link>
         </div>
-        <button type="submit">Login</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <div className="sign-up">
-          <span>Don't have an account? </span>
-          <Link to="/sign-up">Sign Up</Link>
-        </div>
-        {/* <div className="guest-user" onClick={handleGuestUser}>
-          <span> or </span>
-          <span className="guest-text">Continue as a guest</span>
-        </div> */}
       </form>
     </div>
   );
