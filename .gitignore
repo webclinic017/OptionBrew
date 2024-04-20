@@ -35,7 +35,6 @@ yarn-error.*
 *.tsbuildinfo
 
 # env variables
-/FEOptionBrew/.env  
-BEOptionBrew/BEOptionBrew/BEOptionBrew/.env
-BEOptionBrew/BEOptionBrew/venv
+.env  
+venv/
 __pycache__/
