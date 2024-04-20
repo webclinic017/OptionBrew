@@ -38,6 +38,4 @@ yarn-error.*
 /FEOptionBrew/.env  
 BEOptionBrew/BEOptionBrew/BEOptionBrew/.env
 BEOptionBrew/BEOptionBrew/venv
-BEOptionBrew/BEOptionBrew/venv/Lib/site-packages
-./BEOptionBrew/BEOptionBrew/BEOptionBrew/__pycache__
 __pycache__/
