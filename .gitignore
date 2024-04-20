@@ -37,4 +37,5 @@ yarn-error.*
 # env variables
 .env  
 venv/
+# py cache
 __pycache__/
