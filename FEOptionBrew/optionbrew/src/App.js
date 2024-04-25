@@ -7,6 +7,9 @@ import Account from "./pages/Account/Account";
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Market from "./pages/Market/Market";
+import Watchlist from "./pages/Watchlist/Watchlist";
 
 function App() {
   return (
@@ -20,9 +23,9 @@ function App() {
         {/* PROTECTED ROUTES */}
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<Account />} />
-          <Route path="/dashboard" element={<Account />} />
-          <Route path="/market" element={<Account />} />
-          <Route path="/watchlist" element={<Account />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/market" element={<Market />} />
+          <Route path="/watchlist" element={<Watchlist />} />
         </Route>
       </Routes>
     </BrowserRouter>

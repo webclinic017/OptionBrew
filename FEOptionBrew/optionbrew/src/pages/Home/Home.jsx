@@ -158,7 +158,7 @@ const Home = () => {
             Alpaca API
           </a>
           , we provide a seamless and dynamic platform to enhance your trading
-          potential.
+          potential. Sign up and brew your options today!
         </p>
         <div className="header-buttons">
           <button className="btn login-btn" onClick={() => navigate("/login")}>

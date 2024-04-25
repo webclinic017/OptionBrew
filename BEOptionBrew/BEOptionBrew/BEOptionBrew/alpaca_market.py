@@ -18,6 +18,7 @@ class MarketAPI:
       load_dotenv()
       self.api_key = os.getenv('T_ALPACA_API_KEY')
       self.api_secret = os.getenv('T_ALPACA_API_SECRET')
+      print(f'TRADER API KEYS: {self.api_key} \n {self.api_secret} ')
       self.websocket_url = "wss://stream.data.sandbox.alpaca.markets/v2/iex"
       self.connection = None
       self.data = {}  # Change to a dictionary keyed by ticker

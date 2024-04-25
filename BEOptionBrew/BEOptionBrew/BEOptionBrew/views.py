@@ -117,7 +117,7 @@ class TrustedContactDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TrustedContactSerializer
 
 # Trades Views
-@csrf_exempt  # Only for demo purposes. Make sure to handle CSRF protection properly in production.
+@csrf_exempt  # Only for demo purposes.
 def open_position_view(request):
     if request.method == 'POST':
         data = request.POST  

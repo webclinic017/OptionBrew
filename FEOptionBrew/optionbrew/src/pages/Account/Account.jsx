@@ -3,17 +3,36 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Account.css";
 
+/**
+ * A component representing a user account page where user details are displayed and can be logged out.
+ * It fetches user data from a backend upon mounting using an API call and handles user logout.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Account />
+ * )
+ */
 const Account = () => {
+  /** State to hold the user details */
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
   });
+
+  /** State to hold any error messages */
   const [errorMessage, setErrorMessage] = useState("");
+
+  /** Navigation hook from react-router-dom for redirection */
   const navigate = useNavigate();
 
   useEffect(() => {
+    /**
+     * Fetches user details from the server and updates state accordingly.
+     * It uses the axios library to make the HTTP request.
+     */
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/users/me", {
@@ -35,8 +54,11 @@ const Account = () => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, []); // Empty dependency array means this effect will only run once after the component mounts.
 
+  /**
+   * Handles the user logout by removing the session token and navigating to the login page.
+   */
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear session token
     navigate("/"); // Navigate to login page
