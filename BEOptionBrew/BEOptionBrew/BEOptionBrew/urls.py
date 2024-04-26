@@ -16,20 +16,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import (UserListCreate, UserDetail, UserRegistrationView, 
-                    open_position_view, historical_data_view, live_data_view, 
-                    get_live_data, UserLoginView, get_current_user)
+from .views import ( MarketViews, UserViews)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     # REGISTER / LOGIN 
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', UserLoginView.as_view(), name='user-login'),
     path('users/', UserListCreate.as_view(), name='user-list'),
     path('users/<int:pk>/', UserDetail.as_view(), name='user-detail'),
     path('users/me/', get_current_user, name='current-user'),
+
+    # USER DATA 
+    # path('dashboard/balance', )
+
+    # TRANSACTIONS 
+    path('addfunds/', UserTransactions.as_view(), name='add-funds'),
+
     # TRADES 
     path('open-position/', open_position_view, name='open-position'),
+    
     # MARKET DATA
     path('market-data/<str:ticker>/live/', live_data_view, name='live-data-ticker'),
     path('market-data/<str:ticker>/live-data/', get_live_data, name='get-live-data'),

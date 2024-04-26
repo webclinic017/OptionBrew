@@ -25,10 +25,9 @@ class AlpacaAPI:
         url = f"{self.base_url}{endpoint}"
         response = requests.request(method, url, json=data, headers=self.headers)
         if response.status_code in [200, 201]:
-            return response.json()
+            return Response({"API Call Success": "_send_request received 200 or 201"}, status=status.HTTP_200__OK )
         else:
             # Log detailed error information
-            print(f"Failed API call. Status Code: {response.status_code}. Response: {response.text}")
             raise Exception(f"API request failed: {response.status_code} {response.text}")
 
 
@@ -48,7 +47,6 @@ class Users(AlpacaAPI):
             return response['id']  # Return the Alpaca account ID
         else:
             raise Exception("Failed to create Alpaca account or retrieve account ID.")
-
 
     def _transform_data_to_alpaca_format(self, user_data):
         dummy_ssn = self._generate_dummy_ssn()
@@ -105,12 +103,42 @@ class Users(AlpacaAPI):
         }
         return alpaca_payload
 
-
     def _generate_dummy_ssn(self):
         area = random.randint(100, 665)
         group = random.randint(1, 99)
         serial = random.randint(1, 9999)
         return f"{area:03d}-{group:02d}-{serial:04d}"
+
+    def create_ach_relationship(self, account_id, first_name): 
+        endpoint = f'{self.base_url}/v1/accounts/{account_id}/relationships'
+        data = {
+                "bank_account_type": "CHECKING", 
+                "account_owner_name": first_name,
+                "bank_account_number": "123456",
+                "bank_routing_number": "123456780",
+               }
+
+        request_status = self._send_request('post', endpoint, data=data)
+
+        if response_status.status == status.HTTP_200_OK: 
+            return Response(
+                            {
+                             "ACH Relationship created": "ACH Relationship created successfully",
+                             "Data": response_status.data
+                            }, 
+                            status=status.HTTP_201_CREATED)
+            
+    def fetch_balance(self, account_id): 
+        endpoint = f'{self.base_url}/v1/accounts/{account_id}/transfers'
+        data = {
+                "transfer_type": "ach",
+                "direction": "INCOMING",
+                "timing": "immediate"
+            }
+        self._send_request('post', endpoint, )
+        
+
+        
 
 class Trades(AlpacaAPI):
     def open_position(self, symbol, qty, side, type='market', time_in_force='gtc'):
@@ -134,4 +162,3 @@ class Trades(AlpacaAPI):
     def close_position(self, symbol, qty, side, type='market', time_in_force='gtc'):
         # For closing a position, you can use similar logic as opening a position
         return self.open_position(symbol, qty, side, type, time_in_force)
-

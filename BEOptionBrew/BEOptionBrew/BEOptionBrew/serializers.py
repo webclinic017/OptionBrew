@@ -59,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number', 'alpaca_account_id']
 
     def create(self, validated_data):
         # Hash the user's password
@@ -70,6 +70,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if User.objects.filter(phone_number=phone_number).exists():
             raise serializers.ValidationError("Phone number is already in use.")
 
+        # Set a temporary id 
+        user.alpaca_account_id = ""
+        
         # Create the user instance
         user = User.objects.create(**validated_data)
 
