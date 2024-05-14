@@ -100,5 +100,5 @@ class UserTransactions(APIView):
                         status=status.HTTP_200_OK)
 
           
-    def _alpaca_fund_request(self, alpaca_id): 
+    # def _alpaca_fund_request(self, alpaca_id): 
         
