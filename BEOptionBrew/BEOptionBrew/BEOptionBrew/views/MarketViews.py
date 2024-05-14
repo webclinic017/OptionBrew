@@ -94,4 +94,5 @@ def historical_data_view(request, ticker, time_span):
         return JsonResponse({'error': 'Invalid time span'}, status=400)
 
     data = market_api.fetch_historical_data(ticker, start_date.isoformat(), end_date.isoformat(), '1D')
+    print(data)
     return JsonResponse(data, safe=False)
