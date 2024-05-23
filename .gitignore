@@ -59,7 +59,6 @@ migrations/
 public/
 util/ 
 components/ 
-assets/
 Account/
 Dashboard/
 Market/
