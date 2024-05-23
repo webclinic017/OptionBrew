@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="35%" src="./stocktradingplatform/public/logo.png">
+    <img width="35%" src="./FEOptionBrew/optionbrew/src/assets/Logo2.png">
     <h1>Option Brew 📈</h1>
     <a href="https://github.com/your-username/stock-trading-platform">
         <img alt="Status" src="https://img.shields.io/badge/Status-Live-brightgreen">
