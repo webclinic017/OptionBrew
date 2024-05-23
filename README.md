@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="35%" src="./FEOptionBrew/optionbrew/src/assets/Logo2.png">
+    <img width="35%" src="./FEOptionBrew/optionbrew/src/assets/Logo3.png">
     <h1>Option Brew 📈</h1>
     <a href="https://github.com/your-username/stock-trading-platform">
         <img alt="Status" src="https://img.shields.io/badge/Status-Live-brightgreen">
@@ -13,21 +13,15 @@
     </a>
 </div>
 
-## Overview
+## Table of Contents
 
-Welcome to the Stock Trading Platform, an advanced and dynamic web application built with modern technologies to offer a seamless trading experience. The platform provides real-time market data and trading capabilities, leveraging the powerful Alpaca APIs.
+1. [Overview](#-overview)
+2. [License](#-license)
 
-## Features
+## 🌟 Overview
 
-- User Registration and Login
-- Secure Account Management
-- Real-time Market Data
-- Trading Functionality
-- Watchlist Management
-- Interactive Dashboard
+**Option Brew** is an advanced and dynamic web application built with modern technologies to offer a seamless trading experience. The platform provides real-time market data and trading capabilities, leveraging the powerful Alpaca APIs.
 
-## Tech Stack
+## 📄 License
 
-- **Frontend**: ReactJS
-- **Backend**: Django
-- **APIs**: Alpaca Broker API, Alpaca Market API
+This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
